@@ -1,0 +1,43 @@
+from math import sqrt,sin,pi 
+from numpy import empty, savetxt
+from pylab import imshow,gray,show
+
+print("Enter a wavelength:")
+wavelength = float(input())
+k = 2*pi/wavelength
+#Amplitude
+print("Print the amplitude:")
+xi0 = float(input()) 
+# Separation of centers in cm
+print("Enter the separation value in cm:")
+separation = float(input())
+# Side of the square in cm
+print("Enter side of squares in cm:")
+side = float(input())
+# Number of grid points along each side
+points = 500
+# Spacing of points in cm
+spacing = side/points 
+# Calculate the positions of the centers of the circles
+x1 = side/2 + separation/2
+y1 = side/2
+x2 = side/2 - separation/2
+y2 = side/2
+# Make an array to store the heights
+xi = empty([points,points],float)
+
+f = open('output.txt', 'w+')
+# Calculate the values in the array
+for i in range(points):
+    y = spacing*i
+    for j in range(points):
+        x = spacing*j
+        r1 = sqrt((x-x1)**2+(y-y1)**2)
+        r2 = sqrt((x-x2)**2+(y-y2)**2)
+        xi[i,j] = xi0*sin(k*r1) + xi0*sin(k*r2)
+f.write('\n')
+
+# Make the plot
+imshow(xi,origin="lower",extent=[0,side,0,side])
+gray()
+show()
